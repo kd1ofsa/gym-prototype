@@ -18,104 +18,61 @@ document.addEventListener('DOMContentLoaded', () => {
    1. Date Constraints Setup
    ========================================================================== */
 function initDateConstraints() {
-  const startDateInput = document.getElementById('startDate');
-  if (startDateInput) {
+  const startDateInputs = document.querySelectorAll('#free-trial input[name="startDate"], input[name="startDate"], #startDate');
+  startDateInputs.forEach(input => {
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const minDate = `${yyyy}-${mm}-${dd}`;
-    startDateInput.min = minDate;
-    startDateInput.value = minDate;
-  }
+    input.min = minDate;
+    if (!input.value) input.value = minDate;
+  });
 }
 
 /* ==========================================================================
    2. Lead Capture Form Validation & VIP Pass Generation
    ========================================================================== */
 function initFormValidation() {
-  const form = document.getElementById('lead-form');
+  const form = document.querySelector('#free-trial form') || document.getElementById('lead-form');
   if (!form) return;
 
-  const fullNameInput = document.getElementById('fullName');
-  const phoneInput = document.getElementById('phone');
-  const emailInput = document.getElementById('email');
-  const startDateInput = document.getElementById('startDate');
-  const goalSelect = document.getElementById('fitnessGoal');
-  const referralSelect = document.getElementById('referralSource');
+  const nameInput = form.querySelector('input[name="name"], #fullName');
+  const phoneInput = form.querySelector('input[name="phone"], #phone');
+  const emailInput = form.querySelector('input[name="email"], #email');
+  const dateInput = form.querySelector('input[name="startDate"], #startDate');
+  const goalSelect = form.querySelector('select[name="goal"], #fitnessGoal');
 
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    let isValid = true;
-
-    // Validate Full Name
-    if (!fullNameInput.value.trim() || fullNameInput.value.trim().length < 2) {
-      showError('name-error', fullNameInput);
-      isValid = false;
-    } else {
-      clearError('name-error', fullNameInput);
-    }
-
-    // Validate Phone (digits + optional leading plus, min 7 digits)
-    const cleanPhone = phoneInput.value.replace(/[^0-9+]/g, '');
-    if (!cleanPhone || cleanPhone.length < 8) {
-      showError('phone-error', phoneInput);
-      isValid = false;
-    } else {
-      clearError('phone-error', phoneInput);
-    }
-
-    // Validate Email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailInput.value.trim())) {
-      showError('email-error', emailInput);
-      isValid = false;
-    } else {
-      clearError('email-error', emailInput);
-    }
-
-    // Validate Start Date
-    if (!startDateInput.value) {
-      showError('date-error', startDateInput);
-      isValid = false;
-    } else {
-      clearError('date-error', startDateInput);
-    }
-
-    // Validate Goal
-    if (!goalSelect.value) {
-      showError('goal-error', goalSelect);
-      isValid = false;
-    } else {
-      clearError('goal-error', goalSelect);
-    }
-
-    if (!isValid) return;
-
-    // Create Lead Record & Generate Digital Pass
+    // Generate Pass ID & Lead Record
     const randomDigits = Math.floor(1000 + Math.random() * 9000);
     const passId = `VTX-${randomDigits}-7D`;
     const leadData = {
       passId,
-      name: fullNameInput.value.trim(),
-      phone: phoneInput.value.trim(),
-      email: emailInput.value.trim(),
-      startDate: startDateInput.value,
-      goal: goalSelect.value,
-      referral: referralSelect.value || 'Not specified',
+      name: nameInput ? nameInput.value.trim() : 'Guest',
+      phone: phoneInput ? phoneInput.value.trim() : '',
+      email: emailInput ? emailInput.value.trim() : '',
+      startDate: dateInput ? dateInput.value : '',
+      goal: goalSelect ? goalSelect.value : '',
+      referral: '7-Day Free Trial Form',
       createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' })
     };
 
-    // Save to LocalStorage
+    // Save lead to localStorage
     saveLead(leadData);
 
-    // Populate VIP Pass Ticket
-    document.getElementById('ticket-pass-id').textContent = passId;
-    document.getElementById('ticket-name').textContent = leadData.name;
-    document.getElementById('ticket-phone').textContent = leadData.phone;
-    document.getElementById('ticket-start').textContent = formatDateDisplay(leadData.startDate);
-    document.getElementById('ticket-goal').textContent = leadData.goal;
+    // Update VIP Pass modal data if elements exist
+    const ticketPassId = document.getElementById('ticket-pass-id');
+    const ticketName = document.getElementById('ticket-name');
+    const ticketPhone = document.getElementById('ticket-phone');
+    const ticketStart = document.getElementById('ticket-start');
+    const ticketGoal = document.getElementById('ticket-goal');
+
+    if (ticketPassId) ticketPassId.textContent = passId;
+    if (ticketName) ticketName.textContent = leadData.name;
+    if (ticketPhone) ticketPhone.textContent = leadData.phone;
+    if (ticketStart) ticketStart.textContent = formatDateDisplay(leadData.startDate);
+    if (ticketGoal) ticketGoal.textContent = leadData.goal;
 
     // Configure WhatsApp Link with pre-filled message
     const waText = encodeURIComponent(
@@ -126,29 +83,20 @@ function initFormValidation() {
       `🎯 Primary Goal: ${leadData.goal}\n\n` +
       `Looking forward to my first session!`
     );
-    const waUrl = `https://wa.me/15550192834?text=${waText}`;
     const modalWaBtn = document.getElementById('modal-whatsapp-btn');
     if (modalWaBtn) {
-      modalWaBtn.href = waUrl;
+      modalWaBtn.href = `https://wa.me/15550192834?text=${waText}`;
     }
 
-    // Open Pass Modal
-    openModal('pass-modal');
-    showToast(`VIP Pass ${passId} generated successfully!`);
-
-    // Reset Form
-    form.reset();
-    initDateConstraints();
-  });
-
-  // Clear errors on input
-  [fullNameInput, phoneInput, emailInput, startDateInput, goalSelect].forEach(input => {
-    if (input) {
-      input.addEventListener('input', () => {
-        input.classList.remove('is-invalid');
-        const errElem = input.closest('.form-group')?.querySelector('.form-error');
-        if (errElem) errElem.classList.remove('visible');
-      });
+    // Let the form submit natively to FormSubmit unless it is a dummy email
+    const actionUrl = form.getAttribute('action') || '';
+    if (actionUrl.includes('YOUR_EMAIL_HERE')) {
+      // If placeholder email, prevent 404/Formsubmit error and show instant VIP pass modal
+      e.preventDefault();
+      openModal('pass-modal');
+      showToast(`VIP Pass ${passId} generated! (Replace YOUR_EMAIL_HERE with your email to receive submissions)`);
+      form.reset();
+      initDateConstraints();
     }
   });
 }

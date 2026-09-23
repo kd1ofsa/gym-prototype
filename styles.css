@@ -1254,6 +1254,148 @@ textarea {
   height: 16px;
 }
 
+/* Free Trial Section (FormSubmit Integration) */
+#free-trial {
+  padding: 6rem 1.5rem !important;
+  background: radial-gradient(circle at 50% 30%, rgba(204, 255, 0, 0.08) 0%, transparent 65%),
+              var(--bg-main) !important;
+  position: relative;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+#free-trial > div {
+  max-width: 520px !important;
+  margin: 0 auto !important;
+  background: #11151e !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: var(--radius-xl) !important;
+  padding: 3rem 2.5rem !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6) !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+#free-trial > div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-volt), transparent);
+}
+
+#free-trial h2 {
+  font-family: var(--font-heading) !important;
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  margin-bottom: 0.5rem !important;
+  letter-spacing: -0.02em !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+}
+
+#free-trial p {
+  font-family: var(--font-body) !important;
+  font-size: 0.95rem !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 1.75rem !important;
+  text-align: center !important;
+  line-height: 1.5 !important;
+}
+
+#free-trial form {
+  display: grid !important;
+  gap: 1rem !important;
+}
+
+#free-trial input[type="text"],
+#free-trial input[type="tel"],
+#free-trial input[type="email"],
+#free-trial input[type="date"],
+#free-trial select {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0.95rem 1.15rem !important;
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  color: #ffffff !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.95rem !important;
+  outline: none !important;
+  transition: var(--transition) !important;
+}
+
+#free-trial select {
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239aa5b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 16px !important;
+  cursor: pointer !important;
+}
+
+#free-trial select option {
+  background: #11151e !important;
+  color: #ffffff !important;
+}
+
+#free-trial input:focus,
+#free-trial select:focus {
+  border-color: var(--accent-volt) !important;
+  box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.15) !important;
+  background: #0d111a !important;
+}
+
+#free-trial input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
+#free-trial input::placeholder {
+  color: var(--text-muted) !important;
+}
+
+#free-trial button[type="submit"] {
+  width: 100% !important;
+  padding: 1.05rem 1.5rem !important;
+  background: var(--accent-volt) !important;
+  color: #080a0f !important;
+  font-family: var(--font-body) !important;
+  font-weight: 800 !important;
+  font-size: 1.05rem !important;
+  border: none !important;
+  border-radius: var(--radius-pill) !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 18px var(--accent-volt-glow) !important;
+  transition: var(--transition) !important;
+  letter-spacing: 0.02em !important;
+  margin-top: 0.5rem !important;
+  display: block !important;
+  text-align: center !important;
+}
+
+#free-trial button[type="submit"]:hover {
+  background: var(--accent-volt-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 24px rgba(204, 255, 0, 0.4) !important;
+}
+
+@media (max-width: 600px) {
+  #free-trial {
+    padding: 4.5rem 1.25rem !important;
+  }
+  #free-trial > div {
+    padding: 2.25rem 1.5rem !important;
+  }
+  #free-trial h2 {
+    font-size: 1.85rem !important;
+  }
+}
+
 /* Lead Capture Form Section (Core Engine) */
 .form-section {
   background: radial-gradient(circle at 75% 30%, rgba(204, 255, 0, 0.08) 0%, transparent 60%),
