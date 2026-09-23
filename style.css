@@ -1,0 +1,2 @@
+/* Import primary styles so both style.css and styles.css work seamlessly */
+@import url('styles.css');
