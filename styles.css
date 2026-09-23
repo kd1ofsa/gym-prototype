@@ -1258,13 +1258,13 @@ textarea {
 #free-trial {
   padding: 6rem 1.5rem !important;
   background: radial-gradient(circle at 50% 30%, rgba(204, 255, 0, 0.08) 0%, transparent 65%),
-              var(--bg-main) !important;
+    var(--bg-main) !important;
   position: relative;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
 }
 
-#free-trial > div {
+#free-trial>div {
   max-width: 520px !important;
   margin: 0 auto !important;
   background: #11151e !important;
@@ -1276,7 +1276,7 @@ textarea {
   box-sizing: border-box !important;
 }
 
-#free-trial > div::before {
+#free-trial>div::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1388,9 +1388,11 @@ textarea {
   #free-trial {
     padding: 4.5rem 1.25rem !important;
   }
-  #free-trial > div {
+
+  #free-trial>div {
     padding: 2.25rem 1.5rem !important;
   }
+
   #free-trial h2 {
     font-size: 1.85rem !important;
   }
